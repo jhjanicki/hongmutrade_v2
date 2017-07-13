@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+	
+	<!-- D3.geo -->
+    <script src="https://d3js.org/d3.geo.projection.v0.min.js"></script>
+    
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	
+	<script src="data/forceData.js"></script>
+	<script src="data/importData.js"></script>
+	<script src="data/countries.js"></script>
+  
+  	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel='stylesheet'>
+	<link href="css/style.css" rel='stylesheet'>
+  <!-- Roboto & Asar CSS -->
+	<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+	<link href="https://fonts.googleapis.com/css?family=Asar" rel="stylesheet">
+</head>
+<body>
+  <div id="sticky"></div>
+  <div id="tip"></div>
+  <div id="container" style="height: 100vh; overflow: scroll">
+    <div id="content">
+	<div class="panel">
+      <div class="arrow bounce">
+		        <i class="fa fa-arrow-down fa-2x" href="#"></i>
+		        <p class="orange">Scroll Down From Left </p>
+	  </div>
+      <div>
+      		<h1>CYCLES OF DESTRUCTION:</h1>
+       		<h2>Unsustainability, Illegality, <br>and Violence in the<span class="red"> Hongmu Trade</span> </h2><br>
+	        <h3> Situation </h3><br>
+	        <p>Meaning <span class='red'>red wood</span> in Chinese, the term <span class='red'>Hongmu</span> refers to a range of richly hued durable tropical hardwoods used to produce high-end reproduction furniture, flooring and handicrafts.</p><br>
+	        <p>In recent years, China’s growing middle class has driven up demand, resulting in the sector reaching industrial scales. Rapid growth has created a <span class='red'>poorly structured market with little regulation</span>.</p>
+	        <div class="section"></div><br>
+	        <p>The expanding hongmu trade has driven successive <span class='red'>boom and bust cycles</span> all over the world, marked by unsustainable harvest, multiple legal violations including theft, smuggling and corruption, and violence in source countries.</p>
+	        <div class="section"></div><br>
+	        <p>Demand for this rosewood in China has grown exponentially over the past 15 years, from  <span class='red'>144 thousand</span> m3 imported in 2000 to over  <span class='red'>2 million</span> m3 in 2014.</p>
+	        <div class="section"></div> 
+      </div>
+      <div class="panel section">
+        <h3> Are Hongmu Species Protected? </h3>
+        <br>
+        <p>Only  <span class='red'>8 out of 33</span> Hongmu species are protected under CITES.</p>
+        <p class="orange"> Hover over circle to see species </p> 
+      </div>
+      <div class="panel section">
+        <h3> Demand and Transit Countries </h3><br>
+	    <p>Because most hongmu species are not protected under CITES, and because the main demand side country, China, and key trade and processing hub Vietnam, do not prohibit the import of illegally harvested and/or traded timber, illegal wood from these species is legally placed in the markets there everyday.</p>    	
+      </div>
+      <div class="panel">
+        <h3> Source Countries </h3>
+        <p>Soaring demand for scarce hongmu resources has caused supply chains to expand from Southeast Asia to new frontiers in West Africa and Central America. Nearly half of the world's countries, 88 in total, across five continents have been targeted by traders since 2000.</p>
+	    <p class="bold section">Africa</p>
+	    <p>Hongmu exports from West Africa have grown more than 1,000 fold between 2010 and 2015. West Africa is now the world's
+leading hongmu-producing region by volume.</p>
+	    <p class="orange">Sequence through the years to see the change in import volume between 2010 and 2016 from West African countries.</p>
+		<div class="button">
+			<button type="button" id="stepBackward" class="item">
+				<i class="fa fa-arrow-left" aria-hidden="true"></i>
+			</button>
+			<div id="yearLabel" class="item">2010</div>
+			<button type="button" id="stepForward" class="item">
+				<i class="fa fa-arrow-right" aria-hidden="true"></i>
+			</button>
+		</div><br>
+	    <p class="bold">Asia</p>
+	    <p class="section">Although the reported volume from Central America is relatively small, the region has <i>Dalbergia</i> species with very limited distributions that are particularly vulnerable to commercial extinction.</p>
+	    <div></div>
+	    <br>
+	    <br>
+	    <br>	
+	    <br>
+	    <p class="bold">Latin America</p>
+	    <p>With the commercial extinction of Huang Hua Li <i>Dalbergia odorifera</i> in China and heavy restrictions placed on the harvest and export of CITES-listed Red Sandalwood <i>Pterocarpus santialinus</i> in India, Siamese Rosewood <i>Dalbergia cochinchinensis</i> became the most sought-after hongmu species globally</p>
+      	<div class="section"></div>
+      </div>
+      <div class="panel section">
+        <h3> Proposed Solutions </h3><br>
+        <p>1. Amend the annotation for the Appendix II listing for <i>Dalbergia cochinchinensis</i> to cover all parts
+and derivatives commonly found in trade<br>2. Include 13 timber species of genus <i>Dalbergia</i>, native to Mexico and Central America, in Appendix II <br>3. List all <i>Dalbergia</i> species under Appendix II <br>4. List four species of the genus <i>Gibourtia</i> under Appendix II to prevent misdeclaration of hongmu species <br>5. Transfer <i>Pterocarpus erinaceus</i> from
+Appendix III to Appendix II.</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    
+  // get all sections height from top and store in array
+  // once a section is scrolled to, the index is updated, and certain viz are associated with certain index
+  //https://stackoverflow.com/questions/21561480/trigger-event-when-user-scroll-to-specific-element-with-jquery
+  var topArray = [];
+  $(".section").each(function () {
+  		var hT = $(this).offset().top;
+  		var hH = $(this).outerHeight();
+  		var wH = $(window).height();
+  		topArray.push(hT+hH-wH);
+  });
+
+   //console.log(window.innerWidth);
+
+	// set up svg and scrolling
+    var width = window.innerWidth / 2
+    var height = window.innerHeight
+    var translate = 'translate(' + (width / 2) + ',' + (height / 2) + ')'
+    
+    var svg = d3.select("#sticky").append("svg")
+    	.attr('width', width)
+    	.attr('height', height);
+    	
+    var currentScrollTop = d3.select('#currentScrollTop')
+     
+    var body = d3.select('body').node()
+    var container = d3.select('#container')
+    var content = d3.select('#content')
+    
+    var SCROLL_LENGTH = content.node().getBoundingClientRect().height - height
+       
+    var scrollTop = 0
+    var newScrollTop = 0
+    
+	container.on("scroll.scroller", function() {
+      		newScrollTop = container.node().scrollTop
+	    });
+
+    var setDimensions = function() {
+      width = window.innerWidth / 2
+			height = window.innerHeight
+      SCROLL_LENGTH = content.node().getBoundingClientRect().height - height
+    }
+    
+    var render = function() {
+      if (scrollTop !== newScrollTop) {
+        scrollTop = newScrollTop
+        
+        if (scrollTop < topArray[0]){
+        	d3.selectAll(".title")
+					.transition()
+					.duration(100)
+					.style('opacity',1);
+        }
+        
+	   if (scrollTop > topArray[0]){
+	   		 d3.selectAll(".title")
+					.transition()
+					.duration(100)
+					.style('opacity',0);
+			 d3.selectAll(".stat1")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		     d3.selectAll(".axis")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		     d3.selectAll(".horizontalGrid")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		     d3.selectAll(".stat2")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		    
+	   }else{
+	   		d3.selectAll(".axis")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		    d3.selectAll(".horizontalGrid")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		    d3.selectAll(".stat2")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+	   }	   
+	   if (scrollTop > topArray[1]){
+
+			 d3.selectAll(".stat2")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		     d3.selectAll(".stat3")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		    d3.selectAll(".stat3-1")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+	   }else{
+	   		d3.selectAll(".stat3")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    d3.selectAll(".stat3-1")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+	   }
+
+	   if (scrollTop > topArray[2]){
+			d3.selectAll(".stat3")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    d3.selectAll(".stat3-1")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    		
+		    d3.selectAll(".stat4")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		    
+	   }else{
+	   
+	   		d3.selectAll(".stat4")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+	   }
+
+	   if (scrollTop > topArray[3]){
+			d3.selectAll(".stat4")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		
+		    		
+		    d3.selectAll(".circle")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		    		
+		    d3.selectAll(".invisRect").remove();
+		    	
+		    d3.selectAll(".stat5")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		    
+	   }else{
+	   
+	   		d3.selectAll(".circle")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    	
+		    svg.append("rect")
+  				.attr("class","invisRect")  
+  				.attr("x", 0)
+  				.attr("y", 0)                                  
+		        .attr("width", width)
+                .attr("height", height)
+                .attr("fill","transparent");
+                
+                d3.selectAll(".stat5")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+	   }
+
+	   if (scrollTop > topArray[4]){
+			d3.selectAll(".circle")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    	
+		    	svg.append("rect")
+  				.attr("class","invisRect")  
+  				.attr("x", 0)
+  				.attr("y", 0)                                  
+		        .attr("width", width)
+                .attr("height", height)
+                .attr("fill","transparent");
+                
+                 d3.selectAll(".stat5")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    		
+                d3.selectAll("path.line")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    	
+		    	 d3.selectAll("path.china")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		    		
+		    	d3.selectAll("path.bgcountrieschina")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+
+	   }else{
+		        d3.selectAll("path.china")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    		
+		    	d3.selectAll("path.bgcountrieschina")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    		
+		    		d3.selectAll("path.line")
+		    		.style('opacity',1);
+	   }
+	    if (scrollTop > topArray[5]){
+	    	d3.selectAll("path.china")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    		
+		    	d3.selectAll("path.bgcountrieschina")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    	
+		    	d3.selectAll("path.africancountries")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		        d3.selectAll("path.bgcountries")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		    	d3.selectAll(".wafricatext")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+	    	
+	    }else{
+	    	
+	    	   d3.selectAll("path.africancountries")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		       d3.selectAll("path.bgcountries")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		       d3.selectAll(".wafricatext")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+	    }
+	    
+	    
+	    if (scrollTop > topArray[6]){
+		    	
+		       d3.selectAll("path.africancountries")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		       d3.selectAll("path.bgcountries")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		       d3.selectAll(".wafricatext")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    		
+		       d3.selectAll("path.asiancountries")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		       d3.selectAll("path.bgcountries2")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		    		
+		       d3.selectAll(".seasiatext")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+	    	
+	    }else{
+	    	
+	    	d3.selectAll("path.asiancountries")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		       d3.selectAll("path.bgcountries2")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    		
+		       d3.selectAll(".seasiatext")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+	    }
+	    
+	    if (scrollTop > topArray[7]){	
+		       d3.selectAll("path.asiancountries")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		       d3.selectAll("path.bgcountries2")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    		
+		       d3.selectAll(".seasiatext")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    		
+		    	d3.selectAll("path.latincountries")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		    		
+		    	d3.selectAll("path.bgcountries3")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+		    	
+		    	d3.selectAll(".latinamericatext")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',1);
+	    	
+	    }else{
+		        d3.selectAll("path.latincountries")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    		
+		    	d3.selectAll("path.bgcountries3")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+		    		
+		        d3.selectAll(".latinamericatext")
+		    		.transition()
+		    		.duration(100)
+		    		.style('opacity',0);
+	    }
+ 
+      }   
+      window.requestAnimationFrame(render)
+    }
+    window.requestAnimationFrame(render)
+    
+    window.onresize = setDimensions
+
+var textGroup = svg.append('g'); // add texts
+  		
+  		// section 0, doesn't count as it is called on load    
+		createLine(svg);		
+  		
+  		textGroup.append("text")
+  		.attr("class", "title")
+  		.style("font-size","40px")
+  		.attr("x", (width / 4))
+  		.attr("y", (height / 2)-50)
+  		.text("China's Hongmu Trade ");
+
+  		//section 1
+  		textGroup.append("text")
+  		.attr("class", "stat2")
+  		.style("font-size","30px")
+  		.attr("x", (width / 5)+50)
+  		.attr("y", (height / 2))
+  		.text("350 Imports per hour")
+  		.style('opacity',0);
+  		
+  		//section 1
+  		textGroup.append("text")
+  		.attr("class", "stat2")
+  		.style("font-size","30px")
+  		.attr("x", width / 7)
+  		.attr("y", (height / 2)-50)
+  		.text("1300% Increase from 2009 to 2014")
+  		.style('opacity',0);
+  		
+  		
+  		//section 2
+  		textGroup.append("text")
+  		.attr("class", "stat3")
+  		.style("font-size","40px")
+  		.attr("x", width / 4)
+  		.attr("y", (height / 2)-50)
+  		.text("30000 Companies")
+  		.style('opacity',0);
+  		
+  		textGroup.append("text")
+  		.attr("class", "stat3-1")
+  		.style("font-size","30px")
+  		.attr("x", width / 7)
+  		.attr("y", (height / 2))
+  		.text("Make up China's hongmu industry")
+  		.style('opacity',0);
+  		
+  		//section 3
+  		textGroup.append("text")
+  		.attr("class", "stat4")
+  		.style("font-size","30px")
+  		.attr("x", (width / 6)+10)
+  		.attr("y", (height / 2)-50)
+  		.text("25 Billion USD worth of profits")
+  		.style('opacity',0);
+  		
+  		
+  		//section 4 (including force)
+  		textGroup.append("text")
+  		.attr("class", "stat5")
+  		.style("font-size","30px")
+  		.attr("x", width / 7)
+  		.attr("y", (height / 2)-120)
+  		.text("Less than 25% of species are protected")
+  		.style('opacity',0);  
+
+//section 5
+createChinaMap(svg);
+
+//section 6
+createAfricaMap(svg);
+
+//section 7
+createAsiaMap(svg);
+
+//section 8
+createAmericaMap(svg);
+
+//section 4 
+createForce(svg); // create last since we want to be able to hover
+
+
+//line graph
+
+function createLine(svg){
+		
+		var newHeight = height - 100;
+		var newWidth = width - 100;
+
+		var x = d3.scale.linear()
+			    .range([0, newWidth]);
+			
+		var y = d3.scale.linear()
+		    .range([newHeight, 50]);
+
+		var color = d3.scale.category10();
+		
+		var xAxis = d3.svg.axis()
+		    .scale(x)
+		    .ticks(5)
+		    .orient("bottom")
+		    .tickFormat(d3.format("d"));
+		
+		var yAxis = d3.svg.axis()
+		    .scale(y)
+		    .ticks(5)
+		    .orient("left");
+		
+		var line = d3.svg.line()
+		    .interpolate("basis")
+		    .x(function(d) { return x(d.Year); })
+		    .y(function(d) { return y(d.price); });
+  		
+  	
+  		d3.csv("data/import_fake.csv", function(error, data) {
+	  		  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "Year"; }));
+	
+			  data.forEach(function(d) {
+			    /* d.Year =+d.Year; */
+			    d.All =+d.All;
+			    d.Asia =+d.Asia;
+			    d.LatinAmerica =+d.LatinAmerica;
+			    d.Africa =+d.Africa;
+			    d.Other =+d.Other;
+			  });
+			
+			  var continents = color.domain().map(function(name) {
+			    return {
+			      name: name,
+			      values: data.map(function(d) {
+			        return {Year: d.Year, price: +d[name]};
+			      })
+			    };
+			   });
+
+			  
+			  x.domain(d3.extent(data, function(d) { return d.Year; }));
+	
+			  	
+			  y.domain([
+			    d3.min(continents, function(c) { return d3.min(c.values, function(v) { return v.price; }); }),
+			    d3.max(continents, function(c) { return d3.max(c.values, function(v) { return v.price; }); })
+			  ]);
+			  
+			  svg.append("g")
+			      .attr("class", "x axis")
+			      .attr("transform", "translate(80," + newHeight + ")")
+			      .call(xAxis)
+			      .append("text")
+					  .attr("class", "label")
+					  .attr("x", newWidth)
+					  .attr("y", -6)
+					  .style("text-anchor", "end")
+					  .text("year");
+					  
+			  
+			  svg.append("g")
+			      .attr("class", "axis")
+			      .attr("transform", "translate(80," + newHeight + ")")
+			      .append("text")
+					  .attr("class", "label")
+					  .attr("x", 310)
+					  .attr("y", 50)
+					  .style("text-anchor", "end")
+					  .text("CHINA’S HONGMU IMPORTS BY CONTINENT");
+					  
+			  svg.append("g")
+			      .attr("class", "y axis")
+			      .attr("transform", "translate(80,0)")
+			      .call(yAxis)
+			      .append("text")
+					  .attr("class", "label")
+					  .attr("transform", "rotate(-90)")
+					  .attr("x", -50)
+					  .attr("y", 12)
+					  .style("text-anchor", "end")
+					  .text("cubic meters");
+
+			  svg.append("line")
+			        .attr(
+			        {
+			            "class":"horizontalGrid",
+			            "x1" : 80,
+			            "x2" : newWidth+80,
+			            "y1" : y(0),
+			            "y2" : y(0),
+			            "fill" : "none",
+			            "shape-rendering" : "crispEdges",
+			            "stroke" : "black",
+			            "stroke-width" : "1px"
+			        });
+			
+			
+			  var continent = svg.selectAll(".continent")
+			      .data(continents)
+			    .enter().append("g")
+			      .attr("class", "continent");
+			
+			
+			
+			  var path = svg.selectAll(".continent").append("path")
+			      .attr("class", "line")
+			      .attr("transform", "translate(80,0)")
+			      .attr("d", function(d) { return line(d.values); })
+			      .style("stroke", function(d) { if (d.name == "All") 
+			                                        {return "#b2182b"}
+			                                     else if(d.name == "Africa"){return "#ef8a62"}
+			                                     else if(d.name == "Asia"){return "#2166ac"}
+			                                     else if(d.name == "LatinAmerica"){return "#67a9cf"}
+			                                     else{return "#fddbc7";}
+			                                         });
+	  		/* animate lines*/
+	  		
+	  		var totalLength = [path[0][0].getTotalLength(), path[0][1].getTotalLength(),path[0][2].getTotalLength(),path[0][3].getTotalLength(),path[0][4].getTotalLength()];
+	
+			console.log(totalLength);
+			
+			
+			   d3.select(path[0][0])
+			      .attr("stroke-dasharray", totalLength[0] + " " + totalLength[0] ) 
+			      .attr("stroke-dashoffset", totalLength[0])
+			      .transition()
+			        .duration(3500)
+			        .ease("linear")
+			        .attr("stroke-dashoffset", 0);
+			
+			   d3.select(path[0][1])
+			      .attr("stroke-dasharray", totalLength[1] + " " + totalLength[1] )
+			      .attr("stroke-dashoffset", totalLength[1])
+			      .transition()
+			        .duration(3500)
+			        .ease("linear")
+			        .attr("stroke-dashoffset", 0);
+			   
+			   d3.select(path[0][2])
+			      .attr("stroke-dasharray", totalLength[2] + " " + totalLength[2] )
+			      .attr("stroke-dashoffset", totalLength[2])
+			      .transition()
+			        .duration(3500)
+			        .ease("linear")
+			        .attr("stroke-dashoffset", 0);
+			  
+			  d3.select(path[0][3])
+			      .attr("stroke-dasharray", totalLength[3] + " " + totalLength[3] )
+			      .attr("stroke-dashoffset", totalLength[3])
+			      .transition()
+			        .duration(3500)
+			        .ease("linear")
+			        .attr("stroke-dashoffset", 0);
+			  
+			  d3.select(path[0][4])
+			      .attr("stroke-dasharray", totalLength[4] + " " + totalLength[4] )
+			      .attr("stroke-dashoffset", totalLength[4])
+			      .transition()
+			        .duration(3500)
+			        .ease("linear")
+			        .attr("stroke-dashoffset", 0);
+
+			        
+		
+		});
+
+}//end createLine
+
+
+
+function createChinaMap(svg){
+    
+var projection = d3.geo.mercator()
+  .scale(700)
+  // Center the Map in Colombia
+  .center([105, 35])
+  .translate([width / 2, height / 2]);
+
+ var path= d3.geo.path()
+  .projection(projection);
+
+
+ var features = countries.features;   
+ 
+ var china_vietnam = features.filter(function(d){
+ 	return d.properties.name == 'China' || d.properties.name == 'Vietnam';
+ })
+ 
+ console.log(china_vietnam);
+ 	 
+ 
+ var mapLayer = svg.append('g');
+ 
+ mapLayer.selectAll("path")
+	.data(china_vietnam)
+	.enter()
+	.append("path")
+	.attr("d", path)
+	.attr("class","china")
+	.style("stroke", "white")
+	.style("stroke-width", "1")
+	.style("fill", "#2166ac")
+	.style("opacity", 0);
+	
+	
+var background_countries_china = features.filter(function(d){
+	 	return  d.properties.name == 'Mongolia' || d.properties.name == 'India' || d.properties.name == 'Thailand' || d.properties.name == 'Nepal' || d.properties.name == 'Taiwan' || d.properties.name == 'Myanmar' || d.properties.name == 'Bhutan' || d.properties.name == 'Bangladesh' || d.properties.name == 'Laos' || d.properties.name == 'Cambodia' 
+	 	|| d.properties.name == 'Kazakhstan' || d.properties.name == 'Russia' || d.properties.name == 'North Korea' || d.properties.name == 'South Korea' || d.properties.name =='Kyrgyzstan' || d.properties.name =='Tajikistan' || d.properties.name =='Afghanistan' || d.properties.name =='Turkmenistan' || d.properties.name =='Pakistan' || d.properties.name =='Uzbekistan' || d.properties.name =='Japan';
+	 });
+	 
+var bg_china = svg.append('g');
+	var bgCountries = bg_china.selectAll(".bgcountrieschina")
+	            .data(background_countries_china)
+	            .enter()
+	            .append("path")
+	            .attr("class", "bgcountrieschina")
+	            .attr("d", path)
+	            .style("stroke", "white")
+	            .style("stroke-width", "1")
+	            .style("fill", "#eaeaea")
+	            .style("opacity", 0);
+
+} //end createChinaMap 
+    
+
+
+
+function createAfricaMap(svg){
+	var DataArray = ["2010","2011","2012","2013","2014","2015","2016"];
+	var expressed = DataArray[0];
+	var attributeIndex = 0
+	
+	var projection = d3.geo.mercator()
+	  .scale(1200)
+	  // Center the Map in Colombia
+	  .center([-3, 15])
+	  .translate([width / 2, height / 2]);
+	
+	 var path = d3.geo.path()
+	  .projection(projection);
+	
+	
+	 var features = countries.features; 
+	 
+	 var west_africa = features.filter(function(d){
+	 	return d.properties.name == 'Nigeria' || d.properties.name == 'Ghana' || d.properties.name == 'Gambia' || d.properties.name == 'Guinea-Bissau' || d.properties.name == 'Benin';
+	 });
+	 
+	 var background_countries = features.filter(function(d){
+	 	return d.properties.name == 'Burkina Faso' || d.properties.name == 'Ivory Coast' || d.properties.name == 'Liberia' || d.properties.name == 'Guinea' || d.properties.name == 'Togo' || d.properties.name == 'Senegal' || d.properties.name == 'Mali' || d.properties.name == 'Mauritania' || d.properties.name == 'Sierra Leone' || d.properties.name == 'Western Sahara' || d.properties.name == 'Morocco' || d.properties.name == 'Algeria' || d.properties.name == 'Niger' || d.properties.name == 'Nigeria' || d.properties.name == 'Chad' || d.properties.name == 'Cameroon' || d.properties.name == 'Equatorial Guinea' || d.properties.name == 'Gabon' || d.properties.name == 'Republic of the Congo' || d.properties.name == 'Libya' || d.properties.name == 'Central African Republic' || d.properties.name == 'Tunisia'; });
+	
+	var bg = svg.append('g');
+	var bgCountries = bg.selectAll(".bgcountries")
+	            .data(background_countries)
+	            .enter()
+	            .append("path")
+	            .attr("class", "bgcountries")
+	            .attr("d", path)
+	            .style("stroke", "white")
+	            .style("stroke-width", "1")
+	            .style("fill", "#eaeaea")
+	            .style("opacity",0);
+	            
+	 
+       
+			
+			
+	
+	d3.csv("data/africa.csv", function(error, data) {
+		var myfeatures= joinData(west_africa, data, DataArray);
+		
+		var colorScale = makeColorScale(myfeatures);
+		
+		var africaMap = svg.append('g');
+		var westAfricaCountries = africaMap.selectAll(".africancountries")
+	            .data(myfeatures)
+	            .enter()
+	            .append("path")
+	            .attr("class", function(d){
+	                return "Africa " + d.properties.name+" africancountries";
+	            })
+	            .attr("d", path)
+	            .style("fill", function(d) {
+		          return choropleth(expressed, d.properties, colorScale);
+		      })
+		      .style("stroke", "white")
+	            .style("stroke-width", "1")
+		      .style("opacity",0);
+		      
+		     
+		var labels = svg.append('g');
+       
+       labels.selectAll("text") 
+           .data(west_africa) 
+        	.enter().append("svg:text") 
+        	.attr("class", "wafricatext")
+             .text(function(d){return d.properties.name;}) 
+             .attr("x", function(d){return path.centroid(d)[0];})
+			.attr("y", function(d){return  path.centroid(d)[1];})
+			.attr("text-anchor","middle")
+			.style('opacity',0);
+		      
+	    	createSequenceControls(DataArray, attributeIndex, expressed, myfeatures);
+		
+	});
+
+}
+
+
+function createSequenceControls(DataArray, attributeIndex, expressed, thisfeatures){
+
+
+      var yearLabel = d3.select("#yearLabel")
+        .text(expressed)
+
+        $("#stepForward").on("click", function(){
+            attributeIndex +=1
+              if(attributeIndex > DataArray.length-1){
+                attributeIndex = 0
+              }
+
+            expressed = DataArray[attributeIndex]
+
+            d3.select("#yearLabel")
+              .text(expressed)
+
+            changeAttribute(expressed, thisfeatures)
+        })
+
+        $("#stepBackward").on("click", function(){
+            attributeIndex -=1
+
+              if(attributeIndex < 0){
+                attributeIndex = DataArray.length-1
+              }
+
+              expressed = DataArray[attributeIndex]
+
+              d3.select("#yearLabel")
+                .text(expressed)
+
+              changeAttribute(expressed, thisfeatures)
+        })
+}
+
+//dropdown change listener handler
+function changeAttribute(thisexpressed, thisfeatures){
+	/* console.log("peeg"); */
+    //recreate the color scale
+    var colorScale = makeColorScale(thisfeatures);
+
+    //recolor enumeration units
+    d3.selectAll(".africancountries")
+        .style("fill", function(d){
+            return choropleth(thisexpressed, d.properties, colorScale)
+        });
+};
+
+
+function makeColorScale(data){
+	
+    //create color scale generator
+    var colorScale = d3.scale.threshold()
+        .domain([0,5000,20000,40000,60000])
+        .range(['#fef0d9','#fdd49e','#fdbb84','#fc8d59','#e34a33','#b30000']);
+        /* .range(['#2166ac','#67a9cf','#d1e5f0','#fddbc7','#ef8a62','#b2182b']); */
+
+    return colorScale;
+};
+
+function choropleth(expressed, props, colorScale){
+    //make sure attribute value is a number
+
+    var val = parseInt(props[expressed]);
+
+    //if attribute value exists, assign a color; otherwise assign gray
+    if (val){
+        return colorScale(val);
+    } else {
+        return "#CCC";
+    };
+};
+
+
+function joinData(thisFeatures, thisData, DataArray){
+
+
+    //loop through csv to assign each set of csv attribute values to geojson counties
+    for (var i=0; i<thisData.length; i++){
+      var csvCountry = thisData[i]; //the current county
+      var csvKey = csvCountry.Country; //the CSV primary key
+
+      //loop through geojson regions to find correct counties
+      for (var a=0; a<thisFeatures.length; a++){
+
+          var geojsonProps = thisFeatures[a].properties; //the current region geojson properties
+          var geojsonKey = geojsonProps.name; //the geojson primary key
+
+          //where primary keys match, transfer csv data to geojson properties object
+          if (geojsonKey == csvKey){
+              //assign all attributes and values
+              DataArray.forEach(function(attr){
+                  var val = parseFloat(csvCountry[attr]); //get csv attribute value
+                  geojsonProps[attr] = val; //assign attribute and value to geojson properties
+              });
+          };
+      };
+    };
+    /* console.log(thisFeatures); */
+    return thisFeatures;
+};
+
+
+
+function createAsiaMap(svg){
+
+	
+	var projection = d3.geo.mercator()
+	  .scale(800)
+	  .center([110, 10])
+	  .translate([width / 2, height / 2]);
+	
+	 var path = d3.geo.path()
+	  .projection(projection);
+	
+	
+	 var features = countries.features; 
+	 
+	 var SE_Asia = features.filter(function(d){
+	 	return d.properties.name == 'Laos' || d.properties.name == 'Myanmar' || d.properties.name == 'Vietnam' || d.properties.name == 'Indonesia' || d.properties.name == 'Cambodia' || d.properties.name == 'Thailand';
+	 });
+	 
+	 var background_countries = features.filter(function(d){
+	 	return  d.properties.name == 'China' || d.properties.name == 'India' || d.properties.name == 'Taiwan' || d.properties.name == 'Philippines' || d.properties.name == 'Malaysia' || d.properties.name == 'Nepal' || d.properties.name == 'Bhutan' || d.properties.name == 'Bangladesh' || d.properties.name == 'Japan';
+	 });
+	 
+	 console.log(SE_Asia);
+	
+	var bg = svg.append('g');
+	var bgCountries = bg.selectAll(".bgcountries2")
+	            .data(background_countries)
+	            .enter()
+	            .append("path")
+	            .attr("class", "bgcountries2")
+	            .attr("d", path)
+	            .style("stroke", "white")
+	            .style("stroke-width", "1")
+	            .style("fill", "#eaeaea")
+	            .style("opacity",0);
+	            
+	 var SE_AsiaCountries = bg.selectAll(".asiancountries")
+	            .data(SE_Asia)
+	            .enter()
+	            .append("path")
+	            .attr("class", "asiancountries")
+	            .attr("d", path)
+	            .style("stroke", "white")
+	            .style("stroke-width", "1")
+	            .style("fill", "#fdd49e")
+	            .style("opacity",0);
+	            
+	  var labels = svg.append('g');
+       
+       labels.selectAll("text") 
+           .data(SE_Asia) 
+        	.enter().append("svg:text") 
+        	.attr("class", "seasiatext")
+             .text(function(d){return d.properties.name;}) 
+             .attr("x", function(d){return path.centroid(d)[0];})
+			.attr("y", function(d){return  path.centroid(d)[1];})
+			.attr("text-anchor","middle")
+			.style('opacity',0);
+
+}  
+
+
+
+function createAmericaMap(svg){
+
+	
+	var projection = d3.geo.mercator()
+	  .scale(1000)
+	  .center([-98, 20])
+	  .translate([width / 2, height / 2]);
+	
+	 var path = d3.geo.path()
+	  .projection(projection);
+	
+	
+	 var features = countries.features; 
+	 
+	 var LatinAmerica = features.filter(function(d){
+	 	return d.properties.name == 'Nicaragua' || d.properties.name == 'Belize' || d.properties.name == 'Mexico' || d.properties.name == 'Panama' || d.properties.name == 'Guatemala' || d.properties.name == 'Honduras';
+	 });
+	 
+	 var background_countries = features.filter(function(d){
+	 	return  d.properties.name == 'Costa Rica' || d.properties.name == 'El Salvador' || d.properties.name == 'Colombia' || d.properties.name == 'Venezuela' || d.properties.name == 'Ecuador' || d.properties.name == 'United States' || d.properties.name == 'Peru' || d.properties.name == 'Brazil';
+	 });
+	 
+	 //console.log(LatinAmerica);
+	
+	var bg = svg.append('g');
+	var bgCountries = bg.selectAll(".bgcountries3")
+	            .data(background_countries)
+	            .enter()
+	            .append("path")
+	            .attr("class", "bgcountries3")
+	            .attr("d", path)
+	            .style("stroke", "white")
+	            .style("stroke-width", "1")
+	            .style("fill", "#eaeaea")
+	            .style("opacity", 0);
+	            
+	 var LatinCountries = bg.selectAll(".latincountries")
+	            .data(LatinAmerica)
+	            .enter()
+	            .append("path")
+	            .attr("class", "latincountries")
+	            .attr("d", path)
+	            .style("stroke", "white")
+	            .style("stroke-width", "1")
+	            .style("fill", "#fdbb84")
+	            .style("opacity", 0);
+	            
+	 var labels = svg.append('g');
+       
+       labels.selectAll("text") 
+           .data(LatinAmerica) 
+        	.enter().append("svg:text") 
+        	.attr("class", "latinamericatext")
+             .text(function(d){return d.properties.name;}) 
+             .attr("x", function(d){return path.centroid(d)[0];})
+			.attr("y", function(d){return  path.centroid(d)[1];})
+			.attr("text-anchor","middle")
+			.style('opacity',0);
+
+}  
+
+       
+         
+function createForce(svg){         
+         
+    /* force layout  */       	
+        var nodes = graph.nodes;
+        
+        var padding = 1.5, // separation between same-color nodes
+		    clusterPadding = 6; // separation between different-color nodes
+		var maxRadius  = 5; // total number of nodes
+		var n = nodes.length;
+
+		
+  		var clusters = {}; // collect clusters from nodes
+  		nodes.forEach(function(d){
+  			var radius = d.radius;
+  			var clusterID = d.cluster;
+  			if (!clusters[clusterID] || (radius > clusters[clusterID].r)) { 
+  				clusters[clusterID] = d;
+  			}
+  		}); /* console.log(clusters); */
+  		
+  		
+  		 var force = d3.layout.force()
+					  .nodes(nodes)
+					  .size([width, height])	  
+					  .gravity(.02)
+					  .charge(1)
+					  .on("tick", tick)
+					  .start();
+		var g =svg.append('g');
+		var tooltip = d3.select('#tip');
+			
+  			tooltip.append('div').attr('class', 'species');		
+  		
+		var circles = g.selectAll('.circle')
+						 .data(nodes)
+						 .enter().append("circle")
+						 .attr("class","circle")
+						 .attr("r", function(d) { return d.radius; })
+						 .attr("fill", function(d) { return d.color; })
+						 .attr('stroke', 'black')
+						 .attr('stroke-width', 1)
+						 .call(force.drag)
+						 .on("mouseover",function(d){
+						 	console.log(d);
+						 	tooltip.select('.species').html("<b class='blue'> Species </b><i>" + d.species + "</i><br> "+d.common);
+							tooltip.style('display', 'block');
+							tooltip.style('opacity', 2);
+							d3.select(this).attr("fill", function(d){
+								if(d.cluster=='1'){
+									return "#67a9cf";
+								}else{
+									return "#fddbc7";
+								}});
+						 })
+						.on('mouseout', function (d, i) {
+							
+							tooltip.style('display', 'none');
+							tooltip.style('opacity', 0);
+							d3.select(this).attr("fill", function(d){return d.color;});
+						})
+						.style('opacity',0);
+						
+			function tick(e) {
+			  circles
+			      .each(cluster(10 * e.alpha * e.alpha))
+			      .each(collide(.5))
+			      .attr("cx", function(d) { return d.x; })
+			      .attr("cy", function(d) { return d.y; });
+		      }
+		
+			// Move d to be adjacent to the cluster node.
+			function cluster(alpha) {
+			  return function(d) {
+			    var cluster = clusters[d.cluster],
+			        k = 1;
+			
+			    // For cluster nodes, apply custom gravity.
+			    if (cluster === d) {
+			      cluster = {x: width / 2, y: height / 2, radius: -d.radius};
+			      k = .1 * Math.sqrt(d.radius);
+			    }
+			
+			    var x = d.x - cluster.x,
+			        y = d.y - cluster.y,
+			        l = Math.sqrt(x * x + y * y),
+			        r = d.radius + cluster.radius;
+			    if (l != r) {
+			      l = (l - r) / l * alpha * k;
+			      d.x -= x *= l;
+			      d.y -= y *= l;
+			      cluster.x += x;
+			      cluster.y += y;
+			    }
+			  };
+			}
+			
+			// Resolves collisions between d and all other circles.
+			function collide(alpha) {
+			  var quadtree = d3.geom.quadtree(nodes);
+			  return function(d) {
+			    var r = d.radius + maxRadius + Math.max(padding, clusterPadding),
+			        nx1 = d.x - r,
+			        nx2 = d.x + r,
+			        ny1 = d.y - r,
+			        ny2 = d.y + r;
+			    quadtree.visit(function(quad, x1, y1, x2, y2) {
+			      if (quad.point && (quad.point !== d)) {
+			        var x = d.x - quad.point.x,
+			            y = d.y - quad.point.y,
+			            l = Math.sqrt(x * x + y * y),
+			            r = d.radius + quad.point.radius + (d.cluster === quad.point.cluster ? padding : clusterPadding);
+			        if (l < r) {
+			          l = (l - r) / l * alpha;
+			          d.x -= x *= l;
+			          d.y -= y *= l;
+			          quad.point.x += x;
+			          quad.point.y += y;
+			        }
+			      }
+			      return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+			    });
+			  };
+			}
+		
+}
+	// add invisible rect to block force so hover effect won't show up during other visualizations
+	 var rect = svg.append("rect")
+  				.attr("class","invisRect")  
+  				.attr("x", 0)
+  				.attr("y", 0)                                  
+		        .attr("width", width)
+                .attr("height", height)
+                .attr("fill","transparent");
+
+    
+  </script>
+</body>
