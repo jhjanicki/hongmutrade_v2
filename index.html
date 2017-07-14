@@ -25,10 +25,13 @@
   <div id="container" style="height: 100vh; overflow: scroll">
     <div id="content">
 	<div class="panel">
-      <div class="arrow bounce">
+      <!-- 
+<div class="arrow bounce">
 		        <i class="fa fa-arrow-down fa-2x" href="#"></i>
-		        <p class="orange">Scroll Down From Left </p>
+		        <p class="orange">Scroll Down </p>
 	  </div>
+ -->
+
       <div>
       		<h1>CYCLES OF DESTRUCTION:</h1>
        		<h2>Unsustainability, Illegality, <br>and Violence in the<span class="red"> Hongmu Trade</span> </h2><br>
@@ -88,9 +91,19 @@ Appendix III to Appendix II.</p>
   </div>
   <script>
     
+//     window.onload = function() {
+//     if(!window.location.hash) {
+//         window.location = window.location + '#loaded';
+//         window.location.reload();
+//     }
+// }
   // get all sections height from top and store in array
   // once a section is scrolled to, the index is updated, and certain viz are associated with certain index
   //https://stackoverflow.com/questions/21561480/trigger-event-when-user-scroll-to-specific-element-with-jquery
+
+$(function(){
+
+
   var topArray = [];
   $(".section").each(function () {
   		var hT = $(this).offset().top;
@@ -1226,6 +1239,7 @@ function createForce(svg){
                 .attr("height", height)
                 .attr("fill","transparent");
 
+})
     
   </script>
 </body>
