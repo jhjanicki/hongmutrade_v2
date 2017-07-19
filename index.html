@@ -51,11 +51,11 @@
 leading hongmu-producing region by volume.</p>
 	    <p class="orange">Sequence through the years to see the change in import volume between 2010 and 2016 from West African countries.</p>
 		<div class="button">
-			<button type="button" id="stepBackward" class="item">
+			<button type="button" id="stepBackwardAf" class="item">
 				<i class="fa fa-arrow-left" aria-hidden="true"></i>
 			</button>
-			<div id="yearLabel" class="item">2010</div>
-			<button type="button" id="stepForward" class="item">
+			<div id="yearLabelAf" class="item">2010</div>
+			<button type="button" id="stepForwardAf" class="item">
 				<i class="fa fa-arrow-right" aria-hidden="true"></i>
 			</button>
 		</div><br>
@@ -69,6 +69,16 @@ leading hongmu-producing region by volume.</p>
 	    <p class="bold">Latin America</p>
 	    <p>With the commercial extinction of Huang Hua Li <i>Dalbergia odorifera</i> in China and heavy restrictions placed on the harvest and export of CITES-listed Red Sandalwood <i>Pterocarpus santialinus</i> in India, Siamese Rosewood <i>Dalbergia cochinchinensis</i> became the most sought-after hongmu species globally</p>
       	<div class="section"></div>
+      	<p class="orange">Sequence through the years to see the change in import volume between 2010 and 2016 from Central American countries.</p>
+		<div class="button">
+			<button type="button" id="stepBackwardLa" class="item">
+				<i class="fa fa-arrow-left" aria-hidden="true"></i>
+			</button>
+			<div id="yearLabelLa" class="item">2009</div>
+			<button type="button" id="stepForwardLa" class="item">
+				<i class="fa fa-arrow-right" aria-hidden="true"></i>
+			</button>
+		</div><br>
       </div>
       <div class="panel section">
         <h3> Proposed Solutions </h3><br>
@@ -93,12 +103,6 @@ Appendix III to Appendix II.</p>
 	<script src="data/countries.js"></script>
   <script>
     
-//     window.onload = function() {
-//     if(!window.location.hash) {
-//         window.location = window.location + '#loaded';
-//         window.location.reload();
-//     }
-// }
   // get all sections height from top and store in array
   // once a section is scrolled to, the index is updated, and certain viz are associated with certain index
   //https://stackoverflow.com/questions/21561480/trigger-event-when-user-scroll-to-specific-element-with-jquery
@@ -162,53 +166,22 @@ window.onload = function(){
 		     d3.selectAll(".stat2").transition().duration(100).style('opacity',1);
 		    
 	   }else{
-	   		d3.selectAll(".axis")
-		    		.transition()
-		    		.duration(100)
-		    		.style('opacity',1);
-		    d3.selectAll(".horizontalGrid")
-		    		.transition()
-		    		.duration(100)
-		    		.style('opacity',1);
-		    d3.selectAll(".stat2")
-		    		.transition()
-		    		.duration(100)
-		    		.style('opacity',0);
+	   		d3.selectAll(".axis").transition().duration(100).style('opacity',1);
+		    d3.selectAll(".horizontalGrid").transition().duration(100).style('opacity',1);
+		    d3.selectAll(".stat2").transition().duration(100).style('opacity',0);
 	   }	   
 	   if (scrollTop > topArray[1]){
-
-			 d3.selectAll(".stat2")
-		    		.transition()
-		    		.duration(100)
-		    		.style('opacity',0);
-		     d3.selectAll(".stat3")
-		    		.transition()
-		    		.duration(100)
-		    		.style('opacity',1);
-		    d3.selectAll(".stat3-1")
-		    		.transition()
-		    		.duration(100)
-		    		.style('opacity',1);
+			 d3.selectAll(".stat2").transition().duration(100).style('opacity',0);
+		     d3.selectAll(".stat3").transition().duration(100).style('opacity',1);
+		     d3.selectAll(".stat3-1").transition().duration(100).style('opacity',1);
 	   }else{
-	   		d3.selectAll(".stat3")
-		    		.transition()
-		    		.duration(100)
-		    		.style('opacity',0);
-		    d3.selectAll(".stat3-1")
-		    		.transition()
-		    		.duration(100)
-		    		.style('opacity',0);
+	   		d3.selectAll(".stat3").transition().duration(100).style('opacity',0);
+		    d3.selectAll(".stat3-1").transition().duration(100).style('opacity',0);
 	   }
 
 	   if (scrollTop > topArray[2]){
-			d3.selectAll(".stat3")
-		    		.transition()
-		    		.duration(100)
-		    		.style('opacity',0);
-		    d3.selectAll(".stat3-1")
-		    		.transition()
-		    		.duration(100)
-		    		.style('opacity',0);
+			d3.selectAll(".stat3").transition().duration(100).style('opacity',0);
+		    d3.selectAll(".stat3-1").transition().duration(100).style('opacity',0);
 		    		
 		    d3.selectAll(".stat4")
 		    		.transition()
@@ -759,7 +732,7 @@ var background_countries_china = features.filter(function(d){
 	 	|| d.properties.name == 'Kazakhstan' || d.properties.name == 'Russia' || d.properties.name == 'North Korea' || d.properties.name == 'South Korea' || d.properties.name =='Kyrgyzstan' || d.properties.name =='Tajikistan' || d.properties.name =='Afghanistan' || d.properties.name =='Turkmenistan' || d.properties.name =='Pakistan' || d.properties.name =='Uzbekistan' || d.properties.name =='Japan';
 	 });
 	 
-var bg_china = svg.append('g');
+	var bg_china = svg.append('g');
 	var bgCountries = bg_china.selectAll(".bgcountrieschina")
 	            .data(background_countries_china)
 	            .enter()
@@ -779,7 +752,7 @@ var bg_china = svg.append('g');
 function createAfricaMap(svg){
 	var DataArray = ["2010","2011","2012","2013","2014","2015","2016"];
 	var expressed = DataArray[0];
-	var attributeIndex = 0
+	var attributeIndex = 0;
 	
 	var projection = d3.geo.mercator()
 	  .scale(1200)
@@ -812,9 +785,7 @@ function createAfricaMap(svg){
 	            .style("fill", "#eaeaea")
 	            .style("opacity",0);
 	            
-	 
-       
-			
+
 			
 	
 	d3.csv("data/africa.csv", function(error, data) {
@@ -835,7 +806,7 @@ function createAfricaMap(svg){
 		          return choropleth(expressed, d.properties, colorScale);
 		      })
 		      .style("stroke", "white")
-	            .style("stroke-width", "1")
+	          .style("stroke-width", "1")
 		      .style("opacity",0);
 		      
 		     
@@ -850,21 +821,26 @@ function createAfricaMap(svg){
 			.attr("y", function(d){return  path.centroid(d)[1];})
 			.attr("text-anchor","middle")
 			.style('opacity',0);
+			
+		var buttonIDForward = "#stepForwardAf";
+		var buttonIDBackward = "#stepBackwardAf";
+		var yearID = "#yearLabelAf";
+		var thisclass = ".africancountries";
 		      
-	    	createSequenceControls(DataArray, attributeIndex, expressed, myfeatures);
+	    	createSequenceControls(DataArray, attributeIndex, expressed, myfeatures, buttonIDForward, buttonIDBackward, yearID, thisclass);
 		
 	});
 
 }
 
 
-function createSequenceControls(DataArray, attributeIndex, expressed, thisfeatures){
+function createSequenceControls(DataArray, attributeIndex, expressed, thisfeatures, buttonIDForward, buttonIDBackward, yearID, thisclass){
 
 
-      var yearLabel = d3.select("#yearLabel")
-        .text(expressed)
+      var yearLabel = d3.select(yearID)
+        .text(expressed);
 
-        $("#stepForward").on("click", function(){
+        $(buttonIDForward).on("click", function(){
             attributeIndex +=1
               if(attributeIndex > DataArray.length-1){
                 attributeIndex = 0
@@ -872,13 +848,13 @@ function createSequenceControls(DataArray, attributeIndex, expressed, thisfeatur
 
             expressed = DataArray[attributeIndex]
 
-            d3.select("#yearLabel")
+            d3.select(yearID)
               .text(expressed)
 
-            changeAttribute(expressed, thisfeatures)
+            changeAttribute(expressed, thisfeatures, thisclass)
         })
 
-        $("#stepBackward").on("click", function(){
+        $(buttonIDBackward).on("click", function(){
             attributeIndex -=1
 
               if(attributeIndex < 0){
@@ -887,21 +863,21 @@ function createSequenceControls(DataArray, attributeIndex, expressed, thisfeatur
 
               expressed = DataArray[attributeIndex]
 
-              d3.select("#yearLabel")
+              d3.select(yearID)
                 .text(expressed)
 
-              changeAttribute(expressed, thisfeatures)
+              changeAttribute(expressed, thisfeatures, thisclass)
         })
 }
 
 //dropdown change listener handler
-function changeAttribute(thisexpressed, thisfeatures){
+function changeAttribute(thisexpressed, thisfeatures, thisclass){
 	/* console.log("peeg"); */
     //recreate the color scale
     var colorScale = makeColorScale(thisfeatures);
 
     //recolor enumeration units
-    d3.selectAll(".africancountries")
+    d3.selectAll(thisclass)
         .style("fill", function(d){
             return choropleth(thisexpressed, d.properties, colorScale)
         });
@@ -1028,6 +1004,9 @@ function createAsiaMap(svg){
 
 function createAmericaMap(svg){
 
+	var DataArray = ["2009","2010","2011","2012","2013","2014","2015","2016"];
+	var expressed = DataArray[0];
+	var attributeIndex = 0;
 	
 	var projection = d3.geo.mercator()
 	  .scale(1000)
@@ -1049,9 +1028,9 @@ function createAmericaMap(svg){
 	 });
 	 
 	 //console.log(LatinAmerica);
-	
-	var bg = svg.append('g');
-	var bgCountries = bg.selectAll(".bgcountries3")
+	 
+	 var bg = svg.append('g');
+	 var bgCountries = bg.selectAll(".bgcountries3")
 	            .data(background_countries)
 	            .enter()
 	            .append("path")
@@ -1061,29 +1040,51 @@ function createAmericaMap(svg){
 	            .style("stroke-width", "1")
 	            .style("fill", "#eaeaea")
 	            .style("opacity", 0);
-	            
-	 var LatinCountries = bg.selectAll(".latincountries")
-	            .data(LatinAmerica)
+	 
+	 d3.csv("data/latin.csv", function(error, data) {
+		var myfeatures= joinData(LatinAmerica, data, DataArray);
+		
+		var colorScale = makeColorScale(myfeatures);
+		
+		var latinMap = svg.append('g');
+		
+		 var LatinCountries = latinMap.selectAll(".latincountries")
+	            .data(myfeatures)
 	            .enter()
 	            .append("path")
-	            .attr("class", "latincountries")
+	            .attr("class", function(d){
+	                return "Latin " + d.properties.name+" latincountries";
+	            })
 	            .attr("d", path)
-	            .style("stroke", "white")
-	            .style("stroke-width", "1")
-	            .style("fill", "#fdbb84")
-	            .style("opacity", 0);
-	            
-	 var labels = svg.append('g');
+	            .style("fill", function(d) {
+		          return choropleth(expressed, d.properties, colorScale);
+		      })
+		      .style("stroke", "white")
+	           .style("stroke-width", "1")
+		      .style("opacity",0);
+		
+	
+		 var labels = svg.append('g');
        
        labels.selectAll("text") 
-           .data(LatinAmerica) 
-        	.enter().append("svg:text") 
-        	.attr("class", "latinamericatext")
+             .data(LatinAmerica) 
+        	 .enter().append("svg:text") 
+        	 .attr("class", "latinamericatext")
              .text(function(d){return d.properties.name;}) 
              .attr("x", function(d){return path.centroid(d)[0];})
-			.attr("y", function(d){return  path.centroid(d)[1];})
-			.attr("text-anchor","middle")
-			.style('opacity',0);
+			 .attr("y", function(d){return  path.centroid(d)[1];})
+			 .attr("text-anchor","middle")
+			 .style('opacity',0);
+		      
+	    	var buttonIDForward = "#stepForwardLa";
+			var buttonIDBackward = "#stepBackwardLa";
+			var yearID = "#yearLabelLa";
+		    var thisclass = ".latincountries";
+		    
+	    	createSequenceControls(DataArray, attributeIndex, expressed, myfeatures, buttonIDForward, buttonIDBackward, yearID, thisclass);
+		
+	});
+	
 
 }  
 
